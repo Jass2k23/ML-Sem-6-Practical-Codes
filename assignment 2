@@ -1,0 +1,40 @@
+ASS 2:
+hive
+create database mydb;
+use mydb;
+
+//CREATE SIMPLE TABLE
+create table flight(fno int,year int, dest varchar(10),delay float);
+
+//alter table flight rename to air_flight;
+
+//alter table air_flight add columns(source varchar(10));
+
+//drop table flight;
+
+//CREATE TABLE IN FORMAT
+create table flight(fno int,year int, dest varchar(10),delay float);
+row format delimited
+fields terminated by ','
+lines terminated by '\n'
+stored as textfile;
+
+//insert into flight values(123,2009,"mumbai",1.0)
+
+//=======================
+load data local inpath "f.txt"
+overwrite into table flight;
+
+//JOIN
+select a.fno,a.year,a.dest,a.delay,b.source
+from flight a join nflight b
+on (a.fno=b.fno):
+
+//CREATE INDEX TABLE
+create index flight_index on table flight (fno)
+    > as 'org.apache.hadoop.hive.ql.index.compact.CompactIndexHandler'
+    > WITH DEFERRED REBUILD;
+
+//AVG
+select avg(year) as yearkaaverage
+from flight;
